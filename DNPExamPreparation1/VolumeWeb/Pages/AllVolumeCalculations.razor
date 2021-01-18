@@ -1,0 +1,51 @@
+﻿@page "/allVolumeCalculations"
+@using DNPExamPreparation1.Data.Service
+@using DNPExamPreparation1.Model
+@inject IGeometricalFigures GeometricalFigures;
+<div class="jumbotron text-center">
+    <h1>All calculations</h1>
+</div>
+@if (_allCalculations == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Height</th>
+            <th>Radius</th>
+            <th>Volume</th>
+           
+        </tr>
+        </thead>
+        <tbody>
+        <!-- If the logged in user is an adult it will be highlighted -->
+        @* <tr class="active-row"> *@
+        @* 
+        @* </tr> *@
+        @foreach (var item in _allCalculations)
+        {
+            <tr>
+                <td>@item.Type</td>
+                <td>@item.Height</td>
+                <td>@item.Radius</td>
+                <td>@item.Volume</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+}
+@code {
+    private IList<VolumeResult> _allCalculations;
+    protected override async Task OnInitializedAsync()
+    {
+    // Generate the list  
+        _allCalculations=await GeometricalFigures.GetAllCalculations();
+    }
+}

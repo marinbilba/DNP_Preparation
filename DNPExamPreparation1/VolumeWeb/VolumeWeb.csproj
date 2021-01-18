@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>DNPExamPreparation1</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazored.Toast" Version="3.1.2" />
+      <PackageReference Include="Radzen.Blazor" Version="2.18.15" />
+    </ItemGroup>
+
+</Project>

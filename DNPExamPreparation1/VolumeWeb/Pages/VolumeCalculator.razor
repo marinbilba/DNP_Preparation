@@ -1,0 +1,123 @@
+﻿@page "/"
+@using Radzen
+@using DNPExamPreparation1.Data.Service
+@using DNPExamPreparation1.Model
+@inject IToastService ToastService
+@inject IGeometricalFigures GeometricalFigures;
+
+<div class="jumbotron text-center">
+    <h1>Volume Calculator</h1>
+</div>
+
+<div class="row ">
+    <div class="col-lg-7 mx-auto">
+        <div class="card mt-2 mx-auto p-4 bg-light">
+            <div class="card-body bg-light">
+                <div class="container">
+                    <div class="controls">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="form_height">Height *</label>
+                                    <RadzenNumeric Name="Please enter the height" TValue="double" Change=@(args => OnChange(args, "height"))>
+                                    </RadzenNumeric>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="form_radius">Radius *</label>
+                                    <RadzenNumeric Name="Please enter the radius" TValue="double" Change=@(args => OnChange(args, "radius"))>
+                                    </RadzenNumeric>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="form_need"> Figure Type *</label>
+                                    <select id="form_need" @bind="_figureType" name="need" class="form-control" required="required" data-error="Please specify the figure type.">
+                                        <option value="" selected disabled>--Select Figure Type--</option>
+                                        <option>Cylinder</option>
+                                        <option>Cone</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Calculate" @onclick="@CalculateVolume">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="form_radius">Result: @_calculationResult</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Toast Notification *@
+@if (_confirmUpdateNotification)
+{
+    ToastService.ShowSuccess("Calculating...");
+}
+
+@code {
+    private double _height;
+    private double _radius;
+    private string _figureType;
+    private string _calculationResult;
+    // ConfirmNotification
+    private bool _confirmUpdateNotification;
+
+    private async Task CalculateVolume()
+    {
+        switch (_figureType)
+        {
+            case "Cylinder":
+                try
+                {
+                  var volumeResult=  await GeometricalFigures.CalculateVolumeCylinder(_radius, _height);
+                    _calculationResult = volumeResult.Volume.ToString();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                break;
+            case "Cone":
+                try
+                {
+                    var volumeResult=   await GeometricalFigures.CalculateVolumeCone(_radius, _height);
+                    _calculationResult = volumeResult.Volume.ToString();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                break;
+        }
+    }
+
+    void OnChange(dynamic value, string name)
+    {
+        switch (name)
+        {
+            case "height":
+                _height = value;
+                break;
+            case "radius":
+                _radius = value;
+                break;
+        }
+    }
+
+}

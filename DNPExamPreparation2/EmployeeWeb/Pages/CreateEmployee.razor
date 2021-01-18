@@ -1,0 +1,81 @@
+﻿@page "/"
+@using EmployeeWebService.Service
+@using EmployeeWeb.Data
+@using Blazored.Toast.Services
+@inject IEmployeeService EmployeeService;
+@inject IToastService ToastService
+
+<div class="jumbotron text-center">
+    <h1>Create Employee</h1>
+</div>
+<EditForm Model="@_employee" OnValidSubmit="@AddEmployee">
+    <div class="container">
+        <div class=" text-center mt-1 ">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+        </div>
+        <div class="row ">
+            <div class="col-lg-7 mx-auto">
+                <div class="card mt-2 mx-auto p-4 bg-light">
+                    <div class="card-body bg-light">
+                        <div class="container">
+
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="form_name">Name *</label>
+                                            <InputTextArea rows="1" id="form_name" @bind-Value="_employee.Name" type="text" name="name" class="form-control" placeholder="Please enter employee name *" required="required" data-error="Name is required."></InputTextArea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="form_age">Hourly Wage *</label>
+                                            <InputNumber id="form_hWage" rows="1" @bind-Value="_employee.HourlyWage" type="number" name="hWage" class="form-control" placeholder="Please enter employee hourly wage *" required="required" data-error="Valid hourly wage is required."></InputNumber>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="form_id">Hours Per Month </label>
+                                        <InputNumber id="form_id" rows="1" @bind-Value="_employee.HoursPerMonth" type="number" name="ID" class="form-control" placeholder="Please enter the hours/month "></InputNumber>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Submit">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@* Toast Notification *@
+@if (_confirmUpdateNotification)
+{
+    ToastService.ShowSuccess("Calculating...");
+}
+
+@code {
+    private readonly Employee _employee = new Employee();
+    // ConfirmNotification
+    private bool _confirmUpdateNotification;
+
+    private async Task AddEmployee()
+    {
+        try
+        {
+            await EmployeeService.AddEmp(_employee);
+            _confirmUpdateNotification = true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+}

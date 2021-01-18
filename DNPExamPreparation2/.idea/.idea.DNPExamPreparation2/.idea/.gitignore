@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/.idea.DNPExamPreparation2.iml
+/projectSettingsUpdater.xml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Univeristy\Projects\SEM2_DNP\RiderProjects\DNP1ExamPreparation[293141]\DNPExamPreparation2\.idea\.idea.DNPExamPreparation2\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
